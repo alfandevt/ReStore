@@ -13,6 +13,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -22,6 +23,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(p =>
+{
+    p.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+});
 
 // app.UseHttpsRedirection();
 
@@ -35,8 +41,8 @@ var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
 try
 {
-context.Database.Migrate();
-DbInitializer.Initialize(context);
+    context.Database.Migrate();
+    DbInitializer.Initialize(context);
 }
 catch (Exception ex)
 {
