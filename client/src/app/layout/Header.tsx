@@ -12,7 +12,7 @@ import {
 import DarkModeSwitch from '../component/DarkModeSwitch';
 import { Link, NavLink } from 'react-router-dom';
 import { ShoppingCart } from '@mui/icons-material';
-import { useStoreContext } from '../context/StoreContext';
+import { useAppSelector } from '../store/configureStore';
 
 const midLinks = [
   { title: 'catalog', path: '/catalog' },
@@ -43,8 +43,8 @@ interface Props {
 }
 
 export default function Header({ darkMode, handleThemeChange }: Props) {
-  const {basket} = useStoreContext();
-  const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0)
+  const { basket } = useAppSelector((state) => state.basket);
+  const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <AppBar position='static' sx={{ mb: 4 }}>
       <Toolbar
